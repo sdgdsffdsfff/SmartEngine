@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 
     <modelVersion>4.0.0</modelVersion>
@@ -7,8 +6,8 @@
 
     <groupId>com.alibaba.smart.framework</groupId>
     <artifactId>smart-engine</artifactId>
+    <!--  mvn versions:set -DnewVersion=2.0.0-SNAPSHOT -DgenerateBackupPoms=false  -->
     <!--  mvn versions:set -DnewVersion=2.0.0 -DgenerateBackupPoms=false  -->
-    <!--  mvn versions:set -DnewVersion=1.6.3 -DgenerateBackupPoms=false  -->
     <version>2.0.0</version>
 
     <packaging>pom</packaging>
@@ -22,7 +21,7 @@
         <connection>scm:git:git@github.com:alibaba/SmartEngine.git</connection>
         <developerConnection>scm:git:git@github.com:alibaba/SmartEngine.git</developerConnection>
         <url>https://github.com/alibaba/SmartEngine</url>
-        <tag>HEAD</tag>
+        <tag>smart-engine-2.0.0</tag>
     </scm>
 
     <developers>
@@ -65,21 +64,23 @@
         <springframework.version>5.2.3.RELEASE</springframework.version>
         <slf4j.version>1.7.13</slf4j.version>
         <gpg.skip>true</gpg.skip>
+        <javadoc.opts>-Xdoclint:none</javadoc.opts>
     </properties>
 
     <modules>
-        <module>api</module>
-        <module>base</module>
-        <module>runtime</module>
-        <module>bpmn</module>
-        <module>grammar.smart</module>
-        <module>storage.common</module>
-        <module>storage.mysql</module>
-        <module>storage.custom</module>
-        <module>aggregation.mysql</module>
-        <module>aggregation.custom</module>
-        <module>storage.mongodb</module>
-        <module>ext</module>
+        <module>core</module>
+
+
+
+        <module>extension/storage/storage-common</module>
+        <module>extension/storage/storage-custom</module>
+        <module>extension/storage/storage-mysql</module>
+        <module>extension/storage/storage-mongodb</module>
+
+        <module>extension/retry/retry-common</module>
+        <module>extension/retry/retry-custom</module>
+        <module>extension/retry/retry-mysql</module>
+
     </modules>
 
     <dependencies>
@@ -274,15 +275,6 @@
 
 
 
-
-            <!--<dependency>-->
-                <!--<groupId>org.mongodb</groupId>-->
-                <!--<artifactId>mongo-java-driver</artifactId>-->
-                <!--<version>3.5.0</version>-->
-                <!--<scope>provided</scope>-->
-            <!--</dependency>-->
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -351,23 +343,40 @@
                 </executions>
             </plugin>
 
-
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <aggregate>true</aggregate>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                    <additionalparam>${javadoc.opts}</additionalparam>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
             </plugin>
+
 
             <plugin>
                  <groupId>org.codehaus.mojo</groupId>
@@ -385,6 +394,7 @@
 
             <plugin>
                 <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.4</version>
                 <configuration>
                     <skip>${gpg.skip}</skip>
                 </configuration>
