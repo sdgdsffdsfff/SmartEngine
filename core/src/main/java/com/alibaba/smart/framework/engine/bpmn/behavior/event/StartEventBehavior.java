@@ -1,4 +1,4 @@
-package com.alibaba.smart.framework.engine.bpmn.provider.event;
+package com.alibaba.smart.framework.engine.bpmn.behavior.event;
 
 import com.alibaba.smart.framework.engine.behavior.base.AbstractActivityBehavior;
 import com.alibaba.smart.framework.engine.bpmn.assembly.event.StartEvent;
@@ -9,9 +9,6 @@ import com.alibaba.smart.framework.engine.extension.constant.ExtensionConstant;
 
 public class StartEventBehavior extends AbstractActivityBehavior<StartEvent> {
 
-    //public StartEventBehavior(ExtensionPointRegistry extensionPointRegistry, PvmActivity runtimeActivity) {
-    //    super(extensionPointRegistry, runtimeActivity);
-    //}
 
     public StartEventBehavior() {
         super();
